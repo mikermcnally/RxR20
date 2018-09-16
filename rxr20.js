@@ -15065,3 +15065,30 @@ const windowWhen = operators.windowWhen;
 const withLatestFrom = operators.withLatestFrom;
 const zip = operators.zip;
 const zipAll = operators.zipAll;
+
+Rx.fromR20Event = function fromR20Event(event_name) {
+  return Rx.Observable.create(function (observer) {
+      on(event_name, function (event) {
+        observer.next(event);
+      });
+    })
+    .pipe(share());
+};
+
+Rx.r20_ready = Rx.fromR20Event('ready').pipe(take(1));
+Rx.chat_message = Rx.r20_ready.pipe(switchMapTo(Rx.fromR20Event('chat:message')));
+
+Rx.change_token = Rx.r20_ready.pipe(switchMapTo(Rx.fromR20Event('change:token')));
+
+Rx.add_character = Rx.r20_ready.pipe(switchMapTo(Rx.fromR20Event('add:character')));
+Rx.change_character = Rx.r20_ready.pipe(switchMapTo(Rx.fromR20Event('change:character')));
+Rx.change_character_name = Rx.r20_ready.pipe(switchMapTo(Rx.fromR20Event('change:character:name')));
+Rx.change_character_controlledby = Rx.r20_ready.pipe(switchMapTo(Rx.fromR20Event('change:character:controlledby')));
+
+Rx.add_attribute = Rx.r20_ready.pipe(switchMapTo(Rx.fromR20Event('add:attribute')));
+Rx.change_attribute = Rx.r20_ready.pipe(switchMapTo(Rx.fromR20Event('change:attribute')));
+Rx.change_attribute_current = Rx.r20_ready.pipe(switchMapTo(Rx.fromR20Event('change:attribute:current')));
+Rx.change_attribute_max = Rx.r20_ready.pipe(switchMapTo(Rx.fromR20Event('change:attribute:max')));
+
+Rx.change_player_online = Rx.r20_ready.pipe(switchMapTo(Rx.fromR20Event('change:player:_online')));
+Rx.change_player_displayname = Rx.r20_ready.pipe(switchMapTo(Rx.fromR20Event('change:player:_displayname')));
