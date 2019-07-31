@@ -1,2 +1,2 @@
 # RxR20
-Recreates some functionality of RxJS for the Roll20 API
+Observable wrappers around Roll20 events.
